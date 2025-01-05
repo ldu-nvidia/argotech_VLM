@@ -1,41 +1,41 @@
-
-import requests, base64
-
-invoke_url = "https://ai.api.nvidia.com/v1/gr/meta/llama-3.2-11b-vision-instruct/chat/completions"
-stream = True
-
-with open("image.png", "rb") as f:
-  image_b64 = base64.b64encode(f.read()).decode()
-
-assert len(image_b64) < 180_000, \
-  "To upload larger images, use the assets API (see docs)"
-  
-
-headers = {
-  "Authorization": "Bearer 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",
-  "Accept": "text/event-stream" if stream else "application/json"
-}
-
-payload = {
-  "model": 'meta/llama-3.2-11b-vision-instruct',
-  "messages": [
+from openai import OpenAI
+client = OpenAI(base_url="http://0.0.0.0:8000/v1", api_key="not-used")
+messages = [
     {
-      "role": "user",
-      "content": f'What is in this image? <img src="data:image/png;base64,{image_b64}" />'
+        "role": "user",
+        "content": [
+            {
+                "type": "text",
+                "text": "What is in this image?"
+            },
+            {
+                "type": "image_url",
+                "image_url": {
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+                }
+            }
+        ]
     }
-  ],
-  "max_tokens": 512,
-  "temperature": 1.00,
-  "top_p": 1.00,
-  "stream": stream
+]
+chat_response = client.chat.completions.create(
+    model="meta/llama-3.2-11b-vision-instruct",
+    messages=messages,
+    max_tokens=256,
+    stream=False
+)
+assistant_message = chat_response.choices[0].message
+print(assistant_message)
+
+
+
+## alternative to pass images is to encode images into base64 format then send messages along with other params
+'''
+{
+    "type": "image_url",
+    "image_url": {
+        "url": "data:image/jpeg;base64,SGVsbG8gZGVh...ciBmZWxsb3chIQ=="
+    }
 }
-
-response = requests.post(invoke_url, headers=headers, json=payload)
-
-if stream:
-    for line in response.iter_lines():
-        if line:
-            print(line.decode("utf-8"))
-else:
-    print(response.json())
-
+with open("image.png", "rb") as f:
+    image_b64 = base64.b64encode(f.read()).decode()
+'''

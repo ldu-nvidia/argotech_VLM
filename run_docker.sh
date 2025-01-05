@@ -1,4 +1,5 @@
 source token.env
+echo "export NGC_API_KEY=<value>" >> ~/.bashrc
 export LOCAL_NIM_CACHE=~/.cache/nim
 mkdir -p "$LOCAL_NIM_CACHE"
 docker run -it --rm \
