@@ -12,7 +12,7 @@ assert len(image_b64) < 180_000, \
   
 
 headers = {
-  "Authorization": "Bearer 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",
+  "Authorization": "Bearer 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",
   "Accept": "text/event-stream" if stream else "application/json"
 }
 
