@@ -11,5 +11,3 @@ docker run -it --rm \
     -p 8000:8000 \
     nvcr.io/nim/meta/llama-3.2-11b-vision-instruct:latest
 
-
-
