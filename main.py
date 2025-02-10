@@ -5,10 +5,19 @@ import base64
 class AgroVLMAgent:
     def __init__(self) -> None:
         self.client = OpenAI(base_url="http://0.0.0.0:8000/v1", api_key="not-used")
-        self.prompts = ["you are an expert in identifying plant diseases, I will provide you with an image and i want you to answer following questions.", "can you tell what plant is this from the leaf?", "is the leaf healthy or not?", "what kind of disease do you think the leaf has?"]
+        self.prompts = ["You are an expert in identifying plant diseases. I will provide you with an image of a plant leaf, and I want you to follow these steps to answer the questions",
+                        
+                        "Identify the Plant: Examine the leaf's shape, size, color, texture or any unique features that can help determine the plant species",
+                        
+                        "Assess the Leaf's Health: Look for signs of damage or discoloration like yellowing, browning, spots, or wilting. Consider the uniformity of the leaf's color and texture. Healthy leaves generally have vibrant, consistent color and smooth texture. Based on these visual clues, determine whether the leaf appears healthy or unhealthy", 
+                        
+                        "Diagnose the Disease: Analyze any abnormalities or symptoms such as spots, lesions, mold, or unusual patterns. Consider the possible causes for these symptoms, which could include fungal, bacterial, or viral infections, pests, or environmental stress. Provide a hypothesis about what kind of disease or condition the leaf may have. After completing each of these steps, provide your answers to the following questions:",
+                        
+                        "Can you tell what plant this is from the leaf? Is the leaf healthy or not? What kind of disease do you think the leaf has? Describe the disease"]
+        
         # directory to image folder https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset?resource=download
         # could also be streaming images
-        self.image_directory = "/home/ldu/Repos/argotech_VLM/images/train/Apple___Apple_scab/"
+        self.image_directory = "./images/train/Apple___Apple_scab/"
         self.model = "meta/llama-3.2-11b-vision-instruct"
       
 

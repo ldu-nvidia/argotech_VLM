@@ -1,4 +1,4 @@
-source token.env
+source api.env
 echo "export NGC_API_KEY=<value>" >> ~/.bashrc
 export LOCAL_NIM_CACHE=~/.cache/nim
 mkdir -p "$LOCAL_NIM_CACHE"
